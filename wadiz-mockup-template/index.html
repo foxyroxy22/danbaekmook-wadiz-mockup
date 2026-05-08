@@ -1,0 +1,1451 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAROSSOK 단백묵 — 와디즈 펀딩 목업</title>
+    <style>
+      @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        font-size: 16px;
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family:
+          "Pretendard",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Apple SD Gothic Neo",
+          sans-serif;
+        background: #ffffff;
+        color: #333;
+        min-width: 375px;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+      }
+
+      /* ═══════════════════════ GNB ═══════════════════════ */
+      .gnb {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        background: #fff;
+        border-bottom: 1px solid #e5e5e5;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      }
+      .gnb-logo {
+        font-size: 20px;
+        font-weight: 900;
+        letter-spacing: -1px;
+        color: #00c4c4;
+      }
+      .gnb-logo span {
+        color: #222;
+      }
+      .gnb-center {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #f5f5f5;
+        border-radius: 20px;
+        padding: 7px 16px;
+        width: 340px;
+        border: 1px solid #e8e8e8;
+      }
+      .gnb-center input {
+        border: none;
+        background: transparent;
+        outline: none;
+        font-size: 13px;
+        color: #555;
+        width: 100%;
+        font-family: inherit;
+      }
+      .gnb-center svg {
+        width: 15px;
+        height: 15px;
+        stroke: #999;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        flex-shrink: 0;
+      }
+      .gnb-right {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-size: 13px;
+        color: #555;
+      }
+      .gnb-right a:hover {
+        color: #00c4c4;
+      }
+      .gnb-btn-start {
+        background: #00c4c4;
+        color: #fff;
+        padding: 7px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      /* ═══════════════════════ CATEGORY NAV ═══════════════════════ */
+      .cat-nav {
+        background: #fff;
+        border-bottom: 1px solid #e5e5e5;
+        display: flex;
+        align-items: center;
+        overflow-x: auto;
+        gap: 0;
+        padding: 0 20px;
+        height: 44px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .cat-nav::-webkit-scrollbar {
+        display: none;
+      }
+      .cat-nav a {
+        white-space: nowrap;
+        font-size: 13px;
+        font-weight: 500;
+        color: #555;
+        padding: 0 14px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.15s,
+          border-color 0.15s;
+      }
+      .cat-nav a:hover {
+        color: #222;
+      }
+      .cat-nav a.active {
+        color: #00c4c4;
+        font-weight: 700;
+        border-bottom-color: #00c4c4;
+      }
+
+      /* ═══════════════════════ BREADCRUMB ═══════════════════════ */
+      .breadcrumb {
+        background: #fff;
+        padding: 10px 24px;
+        font-size: 12px;
+        color: #999;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border-bottom: 1px solid #efefef;
+      }
+      .breadcrumb span {
+        color: #bbb;
+      }
+
+      /* ═══════════════════════ MAIN LAYOUT ═══════════════════════ */
+      .page-wrap {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 32px 40px 0;
+        display: flex;
+        gap: 48px;
+        align-items: flex-start;
+      }
+
+      /* ═══════════════════════ LEFT CONTENT ═══════════════════════ */
+      .content-left {
+        width: 740px;
+        flex-shrink: 0;
+        min-width: 0;
+      }
+
+      /* --- 썸네일 슬라이더 --- */
+      .thumb-wrap {
+        position: relative;
+        background: #efefef;
+        border-radius: 8px;
+        overflow: hidden;
+        aspect-ratio: 5 / 3;
+        border: 1px solid #e8e8e8;
+      }
+      .thumb-slides {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+      .thumb-slide {
+        position: absolute;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: #efefef;
+      }
+      .thumb-slide.active {
+        display: flex;
+      }
+      /* ★ 각 .thumb-slide 안의 <img> src를 교체하세요 */
+      .thumb-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        inset: 0;
+      }
+      .thumb-slide img[src=""] {
+        display: none;
+      }
+      .thumb-placeholder {
+        text-align: center;
+        color: #aaa;
+        font-size: 14px;
+        line-height: 1.8;
+        z-index: 1;
+      }
+      .thumb-placeholder .icon {
+        font-size: 36px;
+        margin-bottom: 8px;
+      }
+
+      .thumb-dots {
+        position: absolute;
+        bottom: 12px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+      }
+      .thumb-dots span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .thumb-dots span.active {
+        background: #fff;
+      }
+
+      .thumb-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: #00c4c4;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 4px;
+        letter-spacing: 0.3px;
+      }
+
+      /* --- 슬라이더 화살표 버튼 --- */
+      .thumb-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.85);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: #555;
+        z-index: 10;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+        transition: background 0.15s;
+        user-select: none;
+      }
+      .thumb-arrow:hover {
+        background: #fff;
+      }
+      .thumb-arrow.prev {
+        left: 12px;
+      }
+      .thumb-arrow.next {
+        right: 12px;
+      }
+
+      /* 슬라이드 카운터 */
+      .thumb-counter {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        background: rgba(0, 0, 0, 0.45);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 20px;
+        letter-spacing: 0.3px;
+      }
+
+      /* --- AI 스토리 요약 박스 --- */
+      .ai-summary {
+        margin-top: 16px;
+        border: 1.5px solid #c8f0f0;
+        border-radius: 10px;
+        padding: 18px 20px;
+        background: #f5fffe;
+      }
+      .ai-summary-title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #00a0a0;
+        margin-bottom: 14px;
+      }
+      .ai-summary-title .badge {
+        font-size: 10px;
+        background: #e0f7f7;
+        color: #00a0a0;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+      .ai-summary-item {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 12px;
+        align-items: flex-start;
+      }
+      .ai-summary-item:last-child {
+        margin-bottom: 0;
+      }
+      .ai-summary-item .emoji {
+        font-size: 16px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .ai-summary-item-body {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .ai-summary-item-body strong {
+        font-weight: 700;
+        color: #222;
+        display: block;
+        margin-bottom: 2px;
+      }
+      .ai-summary-item-body span {
+        color: #666;
+      }
+
+      /* --- 펀딩/환불 카드 2개 --- */
+      .info-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .info-card {
+        border: 1px solid #e8e8e8;
+        border-radius: 10px;
+        padding: 16px;
+        background: #fff;
+      }
+      .info-card-title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 8px;
+      }
+      .info-card p {
+        font-size: 12px;
+        color: #888;
+        line-height: 1.7;
+      }
+
+      /* --- 탭 메뉴 --- */
+      .tab-menu {
+        display: flex;
+        border-bottom: 2px solid #e5e5e5;
+        margin-top: 28px;
+        gap: 0;
+      }
+      .tab-menu a {
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #999;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .tab-menu a:hover {
+        color: #333;
+      }
+      .tab-menu a.active {
+        color: #222;
+        font-weight: 700;
+        border-bottom-color: #222;
+      }
+
+      /* --- 프로젝트 스토리 --- */
+      .story-section {
+        padding: 32px 0 60px;
+      }
+      .story-section h2 {
+        font-size: 13px;
+        font-weight: 600;
+        color: #999;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+
+      /* ★★★ 여기가 상세페이지 이미지/텍스트가 들어가는 핵심 영역입니다 ★★★
+   .story-body 안에 이미지와 텍스트를 자유롭게 추가/교체하세요. */
+      .story-body {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      /* 스토리 이미지 블록 */
+      .story-img {
+        width: 100%;
+        background: #efefef center/cover no-repeat;
+        /* ★ 이미지 높이는 내용에 따라 조절하세요 */
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #aaa;
+        font-size: 13px;
+        text-align: center;
+        line-height: 1.8;
+      }
+      .story-img.tall {
+        min-height: 600px;
+      }
+      .story-img.short {
+        min-height: 280px;
+      }
+
+      /* 스토리 텍스트 블록 */
+      .story-text {
+        padding: 48px 24px;
+        text-align: center;
+        background: #fff;
+      }
+      .story-text h3 {
+        font-size: 28px;
+        font-weight: 800;
+        line-height: 1.35;
+        color: #111;
+        margin-bottom: 14px;
+        letter-spacing: -0.5px;
+      }
+      .story-text p {
+        font-size: 15px;
+        color: #666;
+        line-height: 1.8;
+      }
+
+      /* 상세페이지 이미지 아이템 */
+      .story-img-item {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      /* 구분선 */
+      .story-divider {
+        height: 1px;
+        background: #efefef;
+        margin: 0;
+      }
+
+      /* ═══════════════════════ RIGHT SIDEBAR ═══════════════════════ */
+      .sidebar {
+        flex: 1;
+        flex-shrink: 0;
+        position: sticky;
+        top: 72px;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        overflow: visible;
+        box-shadow: none;
+      }
+
+      /* 브랜드 */
+      .sb-brand {
+        padding: 0 0 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .sb-brand-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #eee;
+        overflow: hidden;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: #999;
+      }
+      /* ★★★ 브랜드명을 수정하세요 ★★★ */
+      .sb-brand-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: #555;
+      }
+      .sb-brand-follow {
+        margin-left: auto;
+        font-size: 11px;
+        color: #00c4c4;
+        border: 1px solid #00c4c4;
+        border-radius: 4px;
+        padding: 2px 8px;
+        cursor: pointer;
+      }
+
+      /* 제목 */
+      /* ★★★ 제품 제목을 수정하세요 ★★★ */
+      .sb-title {
+        padding: 10px 0 14px;
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.45;
+        color: #111;
+      }
+
+      .sb-divider {
+        height: 1px;
+        background: #f0f0f0;
+      }
+
+      /* 펀딩 현황 */
+      .sb-funding {
+        padding: 16px 0 12px;
+      }
+      .sb-funding-rate {
+        font-size: 28px;
+        font-weight: 900;
+        color: #00c4c4;
+        letter-spacing: -1px;
+        margin-bottom: 6px;
+      }
+      .sb-funding-rate span {
+        font-size: 16px;
+      }
+      .sb-progress-wrap {
+        height: 5px;
+        background: #eee;
+        border-radius: 3px;
+        margin-bottom: 14px;
+        overflow: hidden;
+      }
+      .sb-progress-bar {
+        /* ★★★ width 값으로 펀딩률 조절 ★★★ */
+        width: 219%;
+        height: 100%;
+        background: #00c4c4;
+        border-radius: 3px;
+        max-width: 100%;
+      }
+      .sb-stats {
+        display: flex;
+        gap: 0;
+      }
+      .sb-stat {
+        flex: 1;
+        text-align: center;
+        border-right: 1px solid #f0f0f0;
+      }
+      .sb-stat:last-child {
+        border-right: none;
+      }
+      .sb-stat-num {
+        font-size: 16px;
+        font-weight: 800;
+        color: #111;
+        letter-spacing: -0.5px;
+      }
+      .sb-stat-label {
+        font-size: 11px;
+        color: #999;
+        margin-top: 2px;
+      }
+
+      /* 가격 */
+      .sb-price-wrap {
+        padding: 14px 0 0;
+      }
+      .sb-price-original {
+        font-size: 12px;
+        color: #bbb;
+        text-decoration: line-through;
+        margin-bottom: 2px;
+      }
+      /* ★★★ 가격 수정하세요 ★★★ */
+      .sb-price {
+        font-size: 22px;
+        font-weight: 900;
+        color: #111;
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+      }
+      .sb-price-discount {
+        font-size: 15px;
+        font-weight: 700;
+        color: #00c4c4;
+      }
+      .sb-price-unit {
+        font-size: 14px;
+        font-weight: 400;
+        color: #555;
+      }
+
+      /* 옵션 */
+      .sb-option-wrap {
+        padding: 14px 0 0;
+      }
+      .sb-option-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #888;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      /* ★★★ 옵션 항목을 수정하세요 ★★★ */
+      .sb-option {
+        border: 1.5px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: border-color 0.15s;
+        position: relative;
+      }
+      .sb-option:hover {
+        border-color: #00c4c4;
+      }
+      .sb-option.selected {
+        border-color: #00c4c4;
+        background: #fff9f8;
+      }
+      .sb-option-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 3px;
+      }
+      .sb-option-desc {
+        font-size: 12px;
+        color: #888;
+        line-height: 1.5;
+      }
+      .sb-option-price {
+        font-size: 14px;
+        font-weight: 700;
+        color: #111;
+        margin-top: 6px;
+      }
+      .sb-option-badge {
+        position: absolute;
+        top: -1px;
+        right: 10px;
+        background: #00c4c4;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 0 0 5px 5px;
+      }
+
+      /* CTA 버튼 */
+      .sb-cta {
+        padding: 16px 0 20px;
+      }
+      .sb-btn-main {
+        width: 100%;
+        padding: 15px;
+        background: #00c4c4;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: background 0.15s;
+        font-family: inherit;
+        letter-spacing: -0.3px;
+      }
+      .sb-btn-main:hover {
+        background: #00a8a8;
+      }
+
+      .sb-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .sb-btn-wish,
+      .sb-btn-share {
+        flex: 1;
+        padding: 10px;
+        background: #f5f5f5;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        font-family: inherit;
+        color: #555;
+      }
+      .sb-btn-wish:hover,
+      .sb-btn-share:hover {
+        background: #ebebeb;
+      }
+
+      /* 배송 안내 */
+      .sb-delivery {
+        padding: 14px 0;
+        border-top: 1px solid #f0f0f0;
+        font-size: 12px;
+        color: #888;
+        line-height: 1.8;
+      }
+      .sb-delivery strong {
+        color: #555;
+        font-weight: 600;
+      }
+
+      /* SNS 공유 */
+      .sb-sns {
+        padding: 12px 0 16px;
+        border-top: 1px solid #f0f0f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .sb-sns span {
+        font-size: 12px;
+        color: #aaa;
+      }
+      .sb-sns-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #e5e5e5;
+      }
+
+      /* ═══════════════════════ BOTTOM SECTION ═══════════════════════ */
+      .bottom-wrap {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 40px 80px;
+      }
+
+      /* 서포터 리뷰 */
+      .review-section {
+        background: #fff;
+        border-radius: 12px;
+        padding: 28px 24px;
+        margin-bottom: 24px;
+        border: 1px solid #efefef;
+      }
+      .section-title {
+        font-size: 16px;
+        font-weight: 800;
+        color: #111;
+        margin-bottom: 18px;
+        letter-spacing: -0.3px;
+      }
+      .review-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .review-item {
+        padding: 16px;
+        background: #f9f9f9;
+        border-radius: 8px;
+      }
+      .review-stars {
+        color: #ffb400;
+        font-size: 13px;
+        margin-bottom: 6px;
+      }
+      .review-text {
+        font-size: 13px;
+        color: #555;
+        line-height: 1.7;
+      }
+      .review-author {
+        font-size: 11px;
+        color: #bbb;
+        margin-top: 8px;
+      }
+
+      /* 추천 프로젝트 */
+      .recommend-section {
+        background: #fff;
+        border-radius: 12px;
+        padding: 28px 24px;
+        margin-bottom: 24px;
+        border: 1px solid #efefef;
+      }
+      .recommend-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .rec-card {
+        cursor: pointer;
+      }
+      .rec-thumb {
+        aspect-ratio: 1/1;
+        border-radius: 8px;
+        background: #e8e8e8 center/cover no-repeat;
+        margin-bottom: 8px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: #bbb;
+      }
+      .rec-brand {
+        font-size: 11px;
+        color: #999;
+        margin-bottom: 3px;
+      }
+      .rec-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #222;
+        line-height: 1.4;
+        margin-bottom: 5px;
+      }
+      .rec-rate {
+        font-size: 13px;
+        font-weight: 700;
+        color: #00c4c4;
+      }
+
+      /* ═══════════════════════ EDIT HELPER STYLES ═══════════════════════ */
+      /* 개발 중 편집 가이드 표시 (실제 배포 시 제거) */
+      .edit-guide {
+        border: 2px dashed #ffb400;
+        background: rgba(255, 180, 0, 0.04);
+        position: relative;
+      }
+      .edit-guide::before {
+        content: attr(data-label);
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        background: #ffb400;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 3px;
+        z-index: 10;
+        font-family: monospace;
+      }
+
+      /* ═══════════════════════ RESPONSIVE ═══════════════════════ */
+      @media (max-width: 900px) {
+        .gnb-center {
+          display: none;
+        }
+        .page-wrap {
+          flex-direction: column;
+          padding: 16px 16px 0;
+          gap: 24px;
+        }
+        .sidebar {
+          width: 100%;
+          position: static;
+        }
+        .recommend-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .gnb {
+          padding: 0 16px;
+        }
+        .breadcrumb {
+          padding: 8px 16px;
+        }
+        .bottom-wrap {
+          padding: 0 16px 60px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══════════════════════ GNB ═══════════════════════ -->
+    <header class="gnb">
+      <div class="gnb-logo">wadiz<span>.</span></div>
+      <div class="gnb-center">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
+        <input type="text" placeholder="관심 있는 프로젝트를 검색해보세요" />
+      </div>
+      <div class="gnb-right">
+        <a href="#">로그인</a>
+        <a href="#">회원가입</a>
+        <a href="#" class="gnb-btn-start">프로젝트 시작하기</a>
+      </div>
+    </header>
+
+    <!-- ═══════════════════════ CATEGORY NAV ═══════════════════════ -->
+    <nav class="cat-nav">
+      <a href="#">펀딩</a>
+      <a href="#">프리오더</a>
+      <a href="#">스토어</a>
+      <a href="#">푸드·음료</a>
+      <a href="#" class="active">건강·뷰티</a>
+      <a href="#">패션·잡화</a>
+      <a href="#">테크·가전</a>
+      <a href="#">홈·리빙</a>
+      <a href="#">반려동물</a>
+      <a href="#">스포츠·아웃도어</a>
+      <a href="#">여행·레저</a>
+    </nav>
+
+    <!-- ═══════════════════════ BREADCRUMB ═══════════════════════ -->
+    <div class="breadcrumb">
+      <a href="#">홈</a> <span>›</span> <a href="#">푸드·음료</a> <span>›</span>
+      <a href="#">건강식품</a> <span>›</span>
+      <span style="color: #555">BAROSSOK 단백묵</span>
+    </div>
+
+    <!-- ═══════════════════════ MAIN CONTENT ═══════════════════════ -->
+    <div class="page-wrap">
+      <!-- ── 좌측 콘텐츠 ── -->
+      <div class="content-left">
+        <!-- 썸네일 슬라이더 -->
+        <!--
+    ╔══════════════════════════════════════╗
+    ║  ★ 편집 포인트 1: 메인 썸네일         ║
+    ║  .thumb-main 의 background: url('이미지경로') 을 교체하거나 ║
+    ║  아래 div 안에 <img src="..."> 태그 직접 삽입 ║
+    ╚══════════════════════════════════════╝
+    -->
+        <!-- ★ 메인 썸네일 슬라이더: 이미지 7장 src만 교체하세요 -->
+        <div class="thumb-wrap" id="thumb-slider">
+          <div class="thumb-badge">🔥 얼리버드</div>
+
+          <!-- 슬라이드 이미지들 -->
+          <div class="thumb-slides" id="thumb-slides">
+            <div class="thumb-slide active">
+              <img src="" alt="썸네일1" />
+              <div class="thumb-placeholder">
+                <div class="icon">🖼️</div>
+                썸네일 이미지 1<br /><small>750×450px 권장</small>
+              </div>
+            </div>
+            <div class="thumb-slide">
+              <img src="" alt="썸네일2" />
+              <div class="thumb-placeholder">
+                <div class="icon">🖼️</div>
+                썸네일 이미지 2
+              </div>
+            </div>
+            <div class="thumb-slide">
+              <img src="" alt="썸네일3" />
+              <div class="thumb-placeholder">
+                <div class="icon">🖼️</div>
+                썸네일 이미지 3
+              </div>
+            </div>
+            <div class="thumb-slide">
+              <img src="" alt="썸네일4" />
+              <div class="thumb-placeholder">
+                <div class="icon">🖼️</div>
+                썸네일 이미지 4
+              </div>
+            </div>
+            <div class="thumb-slide">
+              <img src="" alt="썸네일5" />
+              <div class="thumb-placeholder">
+                <div class="icon">🖼️</div>
+                썸네일 이미지 5
+              </div>
+            </div>
+            <div class="thumb-slide">
+              <img src="" alt="썸네일6" />
+              <div class="thumb-placeholder">
+                <div class="icon">🖼️</div>
+                썸네일 이미지 6
+              </div>
+            </div>
+            <div class="thumb-slide">
+              <img src="" alt="썸네일7" />
+              <div class="thumb-placeholder">
+                <div class="icon">🖼️</div>
+                썸네일 이미지 7
+              </div>
+            </div>
+          </div>
+
+          <!-- 좌우 화살표 -->
+          <button class="thumb-arrow prev" id="slide-prev">&#8249;</button>
+          <button class="thumb-arrow next" id="slide-next">&#8250;</button>
+
+          <!-- 카운터 -->
+          <div class="thumb-counter" id="slide-counter">1/7</div>
+        </div>
+
+        <!-- AI 스토리 요약 -->
+        <div class="ai-summary">
+          <div class="ai-summary-title">
+            🤖 AI 스토리 요약
+            <span style="font-size: 11px; color: #aaa; font-weight: 400"
+              >by WAi</span
+            >
+            <span class="badge">Beta</span>
+          </div>
+          <!-- ★ 요약 항목 수정하세요 -->
+          <div class="ai-summary-item">
+            <div class="emoji">🧊</div>
+            <div class="ai-summary-item-body">
+              <strong>식물성 단백묵 6g</strong>
+              <span>탱글한 식감에 단백질을 담은 새로운 헬시푸드</span>
+            </div>
+          </div>
+          <div class="ai-summary-item">
+            <div class="emoji">⚡</div>
+            <div class="ai-summary-item-body">
+              <strong>꺼내고 찍고 먹으면 끝</strong>
+              <span>와사비간장 소스 포함, 별도 조리 없이 바로 섭취</span>
+            </div>
+          </div>
+          <div class="ai-summary-item">
+            <div class="emoji">🔥</div>
+            <div class="ai-summary-item-body">
+              <strong>와디즈 얼리버드 할인</strong>
+              <span>와디즈에서만 20% 할인된 얼리버드 혜택 제공</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 펀딩 / 환불 안내 카드 -->
+        <div class="info-cards">
+          <div class="info-card">
+            <div class="info-card-title">🎁 펀딩</div>
+            <p>
+              와디즈 펀딩은 리워드 구매뿐 아니라 메이커의 새로운 제품, 서비스,
+              콘텐츠 제작을 지원합니다.
+            </p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">↩️ 환불</div>
+            <p>
+              프로젝트 종료 전까지 결제 취소 및 배송 지연과 리워드 문제 시 환불
+              신청이 가능합니다.
+            </p>
+          </div>
+        </div>
+
+        <!-- 탭 메뉴 -->
+        <nav class="tab-menu">
+          <a href="#story" class="active">프로젝트 스토리</a>
+          <a href="#reward">리워드</a>
+          <a href="#notice">공지사항</a>
+          <a href="#community">커뮤니티</a>
+        </nav>
+
+        <!-- 프로젝트 스토리 영역 -->
+        <div id="story" class="story-section">
+          <h2>PROJECT STORY</h2>
+
+          <!--
+      ╔══════════════════════════════════════════════════════════════╗
+      ║  ★ 편집 포인트 3: 상세페이지 본문                             ║
+      ║                                                              ║
+      ║  .story-body 안에 아래 두 가지 블록을 조합해서 넣으세요:       ║
+      ║                                                              ║
+      ║  [이미지 블록]                                                ║
+      ║  <div class="story-img" style="background-image:url('경로');  ║
+      ║       min-height:600px;"></div>                              ║
+      ║                                                              ║
+      ║  [텍스트 블록]                                                ║
+      ║  <div class="story-text">                                    ║
+      ║    <h3>헤드라인</h3>                                          ║
+      ║    <p>본문 카피</p>                                           ║
+      ║  </div>                                                      ║
+      ║                                                              ║
+      ║  PNG/JPG를 <img> 태그로 바로 넣어도 됩니다.                   ║
+      ╚══════════════════════════════════════════════════════════════╝
+      -->
+          <!-- ★ 상세페이지 이미지 20장: 각 <img> 의 src만 교체하세요 -->
+          <!-- 이미지 너비는 100% 자동, 높이는 이미지 비율에 맞게 자동 조정됩니다 -->
+          <div class="story-body">
+            <!-- 상세 이미지 01 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 01" />
+            <!-- 상세 이미지 02 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 02" />
+            <!-- 상세 이미지 03 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 03" />
+            <!-- 상세 이미지 04 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 04" />
+            <!-- 상세 이미지 05 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 05" />
+            <!-- 상세 이미지 06 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 06" />
+            <!-- 상세 이미지 07 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 07" />
+            <!-- 상세 이미지 08 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 08" />
+            <!-- 상세 이미지 09 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 09" />
+            <!-- 상세 이미지 10 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 10" />
+            <!-- 상세 이미지 11 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 11" />
+            <!-- 상세 이미지 12 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 12" />
+            <!-- 상세 이미지 13 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 13" />
+            <!-- 상세 이미지 14 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 14" />
+            <!-- 상세 이미지 15 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 15" />
+            <!-- 상세 이미지 16 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 16" />
+            <!-- 상세 이미지 17 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 17" />
+            <!-- 상세 이미지 18 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 18" />
+            <!-- 상세 이미지 19 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 19" />
+            <!-- 상세 이미지 20 -->
+            <img class="story-img-item" src="" alt="상세페이지 이미지 20" />
+          </div>
+          <!-- /story-body -->
+        </div>
+        <!-- /story-section -->
+      </div>
+      <!-- /content-left -->
+
+      <!-- ── 우측 사이드바 ── -->
+      <!--
+  ╔══════════════════════════════════════╗
+  ║  ★ 편집 포인트 4: 사이드바 정보       ║
+  ║  브랜드명, 제품명, 가격, 옵션을 수정  ║
+  ╚══════════════════════════════════════╝
+  -->
+      <aside class="sidebar">
+        <!-- 브랜드 -->
+        <div class="sb-brand">
+          <div class="sb-brand-icon">B</div>
+          <div class="sb-brand-name">BAROSSOK</div>
+          <div class="sb-brand-follow">+ 팔로우</div>
+        </div>
+
+        <!-- 제목 -->
+        <div class="sb-title">
+          [단백질 6g] 탱글한 식물성 단백묵, 와사비간장 소스 포함!<br />by
+          BAROSSOK (바로쏙)
+        </div>
+
+        <div class="sb-divider"></div>
+
+        <!-- 펀딩 현황 -->
+        <div class="sb-funding">
+          <div class="sb-funding-rate">219<span>%</span></div>
+          <div class="sb-progress-wrap">
+            <div class="sb-progress-bar"></div>
+          </div>
+          <div class="sb-stats">
+            <div class="sb-stat">
+              <div class="sb-stat-num">219%</div>
+              <div class="sb-stat-label">달성률</div>
+            </div>
+            <div class="sb-stat">
+              <div class="sb-stat-num">142명</div>
+              <div class="sb-stat-label">서포터</div>
+            </div>
+            <div class="sb-stat">
+              <div class="sb-stat-num">12일</div>
+              <div class="sb-stat-label">남음</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-divider"></div>
+
+        <!-- 가격 -->
+        <div class="sb-price-wrap">
+          <div class="sb-price-original">15,000원</div>
+          <div class="sb-price">
+            <span class="sb-price-discount">20%</span>
+            12,000<span class="sb-price-unit">원~</span>
+          </div>
+        </div>
+
+        <!-- 옵션 선택 -->
+        <div class="sb-option-wrap">
+          <div class="sb-option-label">리워드 선택</div>
+
+          <div class="sb-option selected">
+            <div class="sb-option-badge">인기</div>
+            <div class="sb-option-name">오리지널 단백묵 2팩</div>
+            <div class="sb-option-desc">
+              오리지널 맛 × 2개<br />와사비간장 소스 포함
+            </div>
+            <div class="sb-option-price">12,000원</div>
+          </div>
+
+          <div class="sb-option">
+            <div class="sb-option-name">흑임자 단백묵 2팩</div>
+            <div class="sb-option-desc">
+              흑임자 맛 × 2개<br />와사비간장 소스 포함
+            </div>
+            <div class="sb-option-price">12,000원</div>
+          </div>
+
+          <div class="sb-option">
+            <div class="sb-option-name">혼합 4팩 세트</div>
+            <div class="sb-option-desc">
+              오리지널 2 + 흑임자 2<br />와사비간장 소스 포함
+            </div>
+            <div class="sb-option-price">22,000원</div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="sb-cta">
+          <button class="sb-btn-main">지금 펀딩 참여하기</button>
+          <div class="sb-actions">
+            <button class="sb-btn-wish">🤍 찜하기</button>
+            <button class="sb-btn-share">🔗 공유하기</button>
+          </div>
+        </div>
+
+        <!-- 배송 안내 -->
+        <div class="sb-delivery">
+          <strong>📦 배송 안내</strong><br />
+          아이스박스 + 아이스팩 동봉<br />
+          금요일 10시 이후 주문 → 화요일 발송<br />
+          신선식품 특성상 단순변심 반품 불가
+        </div>
+
+        <!-- SNS 공유 -->
+        <div class="sb-sns">
+          <span>공유</span>
+          <div class="sb-sns-btn">K</div>
+          <div class="sb-sns-btn">f</div>
+          <div class="sb-sns-btn">✉</div>
+          <div class="sb-sns-btn">🔗</div>
+        </div>
+      </aside>
+      <!-- /sidebar -->
+    </div>
+    <!-- /page-wrap -->
+
+    <!-- ═══════════════════════ BOTTOM ═══════════════════════ -->
+    <div class="bottom-wrap" style="margin-top: 40px">
+      <!-- 서포터 후기 (예시) -->
+      <div class="review-section">
+        <div class="section-title">💬 서포터 후기</div>
+        <div class="review-list">
+          <div class="review-item">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">
+              탱글한 식감이 정말 독특해요! 다이어트 중인데 단백질도 챙기고 맛도
+              있어서 재구매 의사 100%입니다.
+            </div>
+            <div class="review-author">서포터 김*영 · 3일 전</div>
+          </div>
+          <div class="review-item">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">
+              곤약처럼 가볍고 단백질도 있고... 와사비간장 소스랑 먹으면 진짜
+              맛있어요. 야식으로 죄책감 없이 먹을 수 있는 게 최고!
+            </div>
+            <div class="review-author">서포터 이*진 · 5일 전</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 추천 프로젝트 -->
+      <div class="recommend-section">
+        <div class="section-title">비슷한 프로젝트</div>
+        <div class="recommend-grid">
+          <div class="rec-card">
+            <div class="rec-thumb" style="background-color: #f0ece4">
+              이미지
+            </div>
+            <div class="rec-brand">건강식품</div>
+            <div class="rec-name">저칼로리 곤약 떡볶이</div>
+            <div class="rec-rate">534%</div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-thumb" style="background-color: #e8f0e4">
+              이미지
+            </div>
+            <div class="rec-brand">단백질</div>
+            <div class="rec-name">식물성 프로틴 쉐이크</div>
+            <div class="rec-rate">281%</div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-thumb" style="background-color: #f0e8e8">
+              이미지
+            </div>
+            <div class="rec-brand">다이어트</div>
+            <div class="rec-name">저당 현미 도시락</div>
+            <div class="rec-rate">178%</div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-thumb" style="background-color: #e8ecf0">
+              이미지
+            </div>
+            <div class="rec-brand">헬시푸드</div>
+            <div class="rec-name">두부 면 파스타</div>
+            <div class="rec-rate">142%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════ 편집 가이드 패널 ═══════════════════════ -->
+    <div
+      style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        background: #111;
+        color: #fff;
+        border-radius: 10px;
+        padding: 14px 18px;
+        font-size: 12px;
+        line-height: 1.9;
+        max-width: 260px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        font-family: monospace;
+      "
+    >
+      <div
+        style="
+          font-weight: 700;
+          font-size: 13px;
+          margin-bottom: 8px;
+          color: #d9ff65;
+        "
+      >
+        ✏️ 편집 포인트
+      </div>
+      <div>① 메인 썸네일 이미지 교체</div>
+      <div>② 서브 썸네일 4장 교체</div>
+      <div>③ 상세페이지 본문 (노란 점선)</div>
+      <div>④ 사이드바: 가격·옵션·제목</div>
+      <div style="margin-top: 8px; color: #aaa; font-size: 11px">
+        노란 점선 박스 = 편집 영역
+      </div>
+      <div style="margin-top: 6px">
+        <span
+          style="cursor: pointer; color: #ff8a3d"
+          onclick="
+            document.querySelectorAll('.edit-guide').forEach((e) => {
+              e.classList.toggle('edit-guide');
+            })
+          "
+        >
+          가이드 숨기기
+        </span>
+      </div>
+    </div>
+
+    <script>
+      // 메인 썸네일 슬라이더
+      const slides = document.querySelectorAll(".thumb-slide");
+      const counter = document.getElementById("slide-counter");
+      let current = 0;
+
+      function goSlide(n) {
+        slides[current].classList.remove("active");
+        current = (n + slides.length) % slides.length;
+        slides[current].classList.add("active");
+        counter.textContent = current + 1 + "/" + slides.length;
+      }
+
+      document
+        .getElementById("slide-prev")
+        .addEventListener("click", () => goSlide(current - 1));
+      document
+        .getElementById("slide-next")
+        .addEventListener("click", () => goSlide(current + 1));
+
+      // 옵션 선택
+      document.querySelectorAll(".sb-option").forEach((opt) => {
+        opt.addEventListener("click", () => {
+          document
+            .querySelectorAll(".sb-option")
+            .forEach((o) => o.classList.remove("selected"));
+          opt.classList.add("selected");
+        });
+      });
+
+      // 탭 메뉴
+      document.querySelectorAll(".tab-menu a").forEach((tab) => {
+        tab.addEventListener("click", (e) => {
+          document
+            .querySelectorAll(".tab-menu a")
+            .forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+        });
+      });
+    </script>
+  </body>
+</html>
